@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мое первое приложение погоды</title>
+</head>
+<body>
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    async function showPosition(position) {
+      const coords = position.coords
+      const key = 'f17feab570e94c938b9212307240504'
+
+      const response = await fetch("http://api.weatherapi.com/v1/current.json?q=" + coords.latitude + ',' + coords.longitude + '&key=' + key);
+      const { current } = await response.json();
+      document.querySelector('.app-temperature').innerHTML = current.temp_c + '°'
+    }
+
+    getLocation()
+  </script>
+
+  <style>
+    @font-face {
+      font-family: 'Leonid';
+      font-weight: 100;
+      font-style: normal;
+      src: url('./fonts/SF-Pro-Display-Light.otf');
+    }
+
+    @font-face {
+      font-family: 'Leonid';
+      font-weight: 400;
+      font-style: normal;
+      src: url('./fonts/SF-Pro-Display-Regular.otf');
+    }
+
+    body {
+      font-family: 'Leonid';
+    }
+
+
+    .app {
+      background: url(images/bg.jpg);
+      background-color: #b2b6cf;
+      border-radius: 16px;
+      overflow: hidden;
+      color: #fff;
+      position: relative;
+      border-radius: 46px;
+      width: 390px;
+      margin: 10px auto;
+      height: 844px;
+    }
+
+    .app-info {
+      padding-top: 165px;
+      text-align: center;
+    }
+
+    .app-city {
+      font-size: 34px;
+    }
+
+    .app-temperature {
+      font-size: 96px;
+      font-weight: 100;
+    }
+
+    .house {
+      background: url('./images/house.png') 50% 100% no-repeat;
+      background-size: contain;
+      height: 390px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .fixed-element {
+      background-color: red;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: fixed;
+      bottom: 50px;
+      right: 50px;
+    }
+
+    .absoluted-element {
+      background-color: red;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 50px;
+      left: 50px;
+    }
+  </style>
+
+
+  <div class="fixed-element">
+  </div>
+
+  <div class="absoluted-element">
+  </div>
+
+  <div class="app">
+    <div class="app-info">
+      <div class="app-city">
+        Москва
+      </div>
+      <div class="app-temperature">
+        19°
+      </div>
+    </div>
+    <div class="house">
+    </div>
+
+  </div>
+</body>
+</html>
